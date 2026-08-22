@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Users, FileText, Activity, LogOut } from 'lucide-react';
+import { Users, FileText, Activity, LogOut, Settings } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const HRDashboard = () => {
@@ -48,6 +50,9 @@ const HRDashboard = () => {
           </button>
           <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
             <FileText className="w-5 h-5 mr-3" /> Leave Approvals
+          </button>
+          <button onClick={() => navigate('/hr/system')} className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
+            <Settings className="w-5 h-5 mr-3" /> System
           </button>
         </nav>
         <button onClick={handleLogout} className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-destructive hover:bg-destructive/10 transition-colors mt-auto">
