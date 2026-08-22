@@ -40,9 +40,34 @@ model Employee {
   attendance    Attendance[]
   leaveBalances LeaveBalance[]
   leaveRequests LeaveRequest[]
+  payslips      Payslip[]
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Payslip {
+  id          String   @id @default(uuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  month       Int
+  year        Int
+  basicSalary Float
+  allowances  Float    @default(0)
+  deductions  Float    @default(0)
+  netSalary   Float
+  status      PayslipStatus @default(DRAFT)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([employeeId, month, year])
+}
+
+enum PayslipStatus {
+  DRAFT
+  GENERATED
+  PAID
 }
 
 model LeaveType {

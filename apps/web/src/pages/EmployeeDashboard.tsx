@@ -96,16 +96,16 @@ const EmployeeDashboard = () => {
       <aside className="w-64 bg-card border-r border-border p-6 flex flex-col hidden md:flex">
         <div className="font-bold text-2xl text-primary mb-12">Dayflow</div>
         <nav className="space-y-2 flex-1">
-          <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg bg-primary/10 text-primary">
+          <button onClick={() => navigate('/dashboard')} className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg bg-primary/10 text-primary">
             <Clock className="w-5 h-5 mr-3" /> Dashboard
           </button>
           <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
             <Calendar className="w-5 h-5 mr-3" /> Leave
           </button>
-          <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
+          <button onClick={() => navigate('/payroll')} className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
             <FileText className="w-5 h-5 mr-3" /> Payroll
           </button>
-          <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
+          <button onClick={() => navigate('/profile')} className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
             <Settings className="w-5 h-5 mr-3" /> Profile
           </button>
         </nav>
