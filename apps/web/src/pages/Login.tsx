@@ -38,8 +38,13 @@ const Login = () => {
     }
   };
 
+  const handleDemoLogin = (type: 'HR' | 'EMPLOYEE') => {
+    setEmail(type === 'HR' ? 'hr@dayflow.com' : 'employee@dayflow.com');
+    setPassword('password123');
+  };
+
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
+    <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md bg-card p-8 rounded-2xl shadow-lg border border-border">
         <div className="flex justify-center mb-6">
           <div className="p-3 bg-primary/10 rounded-full">
@@ -81,10 +86,30 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-primary-foreground py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-all disabled:opacity-70"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
+            
+          <div className="mt-6 border-t border-border pt-6">
+            <p className="text-sm text-muted-foreground text-center mb-4">Or try the interactive demo:</p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('EMPLOYEE')}
+                className="w-full inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-card text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Employee Demo
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('HR')}
+                className="w-full inline-flex justify-center py-2 px-4 border border-border rounded-md shadow-sm bg-card text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                HR Demo
+              </button>
+            </div>
+          </div>
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
