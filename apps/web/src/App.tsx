@@ -8,6 +8,7 @@ import HRDashboard from './pages/HRDashboard';
 import Profile from './pages/Profile';
 import Payroll from './pages/Payroll';
 import SystemSettings from './pages/SystemSettings';
+import Employees from './pages/Employees';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/payroll" element={<Payroll />} />
         <Route path="/hr/dashboard" element={<HRDashboard />} />
+        <Route path="/hr/employees" element={<Employees />} />
         <Route path="/hr/system" element={<SystemSettings />} />
       </Routes>
     </BrowserRouter>

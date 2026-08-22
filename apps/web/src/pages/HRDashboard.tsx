@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Users, FileText, Activity, LogOut, Settings } from 'lucide-react';
+import { Users, FileText, Activity, LogOut, Settings, Sparkles, AlertTriangle, CheckCircle } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const HRDashboard = () => {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ totalEmployees: 0, presentToday: 0, leavesToday: 0, attendanceRate: '0' });
   const [charts, setCharts] = useState({ attendanceChart: [], leaveDistribution: [] });
+  const [insights, setInsights] = useState<any[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,6 +28,12 @@ const HRDashboard = () => {
         setCharts(res.data.charts);
       }
     }).catch(err => console.error("Error fetching analytics:", err));
+
+    axios.get('http://localhost:5000/api/ai/insights', {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(res => {
+      if (res.data.success) setInsights(res.data.insights);
+    }).catch(err => console.error("Error fetching insights:", err));
   }, [navigate]);
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
@@ -45,7 +53,7 @@ const HRDashboard = () => {
           <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg bg-primary/10 text-primary">
             <Activity className="w-5 h-5 mr-3" /> Dashboard
           </button>
-          <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
+          <button onClick={() => navigate('/hr/employees')} className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
             <Users className="w-5 h-5 mr-3" /> Employees
           </button>
           <button className="flex items-center w-full px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
@@ -138,6 +146,35 @@ const HRDashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* AI Workforce Intelligence */}
+        <div className="mt-6 bg-card p-6 rounded-2xl shadow-sm border border-border">
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles className="w-5 h-5 text-primary" />
+            <h2 className="text-lg font-semibold">Workforce Intelligence Alerts</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {insights.length === 0 ? (
+              <p className="text-muted-foreground text-sm col-span-2">Analyzing workforce patterns...</p>
+            ) : (
+              insights.map(insight => (
+                <div key={insight.id} className={`p-4 rounded-xl border flex gap-4 ${insight.type === 'WARNING' ? 'bg-amber-500/10 border-amber-500/20' : 'bg-green-500/10 border-green-500/20'}`}>
+                  <div className={`mt-0.5 shrink-0 ${insight.type === 'WARNING' ? 'text-amber-500' : 'text-green-500'}`}>
+                    {insight.type === 'WARNING' ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle className="w-5 h-5" />}
+                  </div>
+                  <div>
+                    <h3 className={`font-semibold text-sm ${insight.type === 'WARNING' ? 'text-amber-700 dark:text-amber-500' : 'text-green-700 dark:text-green-500'}`}>
+                      {insight.title}
+                    </h3>
+                    <p className="text-sm mt-1 text-muted-foreground">{insight.message}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
       </main>
     </div>
   );
