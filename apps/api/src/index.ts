@@ -9,6 +9,7 @@ import payrollRoutes from './routes/payroll.routes';
 import analyticsRoutes from './routes/analytics.routes';
 import notificationRoutes from './routes/notification.routes';
 import systemRoutes from './routes/system.routes';
+import aiRoutes from './routes/ai.routes';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use('/api/payroll', payrollRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/system', systemRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

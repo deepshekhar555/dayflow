@@ -9,6 +9,7 @@ import { Clock, Calendar, FileText, Settings, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Clock, Calendar, FileText, Settings, LogOut, Bell } from 'lucide-react';
+import AICopilot from '../components/AICopilot';
 
 const EmployeeDashboard = () => {
   const navigate = useNavigate();
@@ -289,6 +290,8 @@ const EmployeeDashboard = () => {
           </div>
         </div>
       </main>
+      
+      <AICopilot />
     </div>
   );
 };
