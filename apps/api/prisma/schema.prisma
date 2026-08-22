@@ -38,9 +38,53 @@ model Employee {
   joiningDate   DateTime
   
   attendance    Attendance[]
+  leaveBalances LeaveBalance[]
+  leaveRequests LeaveRequest[]
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model LeaveType {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  daysAllowed Int
+  
+  balances    LeaveBalance[]
+  requests    LeaveRequest[]
+}
+
+model LeaveBalance {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  leaveTypeId String
+  leaveType   LeaveType @relation(fields: [leaveTypeId], references: [id])
+  used        Int       @default(0)
+  
+  @@unique([employeeId, leaveTypeId])
+}
+
+model LeaveRequest {
+  id          String      @id @default(uuid())
+  employeeId  String
+  employee    Employee    @relation(fields: [employeeId], references: [id])
+  leaveTypeId String
+  leaveType   LeaveType   @relation(fields: [leaveTypeId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  reason      String
+  status      LeaveStatus @default(PENDING)
+  hrComment   String?
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model Attendance {

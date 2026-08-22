@@ -10,6 +10,7 @@ const EmployeeDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [attendance, setAttendance] = useState<any[]>([]);
+  const [leaves, setLeaves] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const EmployeeDashboard = () => {
     }
     setUser(JSON.parse(userData));
     fetchAttendance();
+    fetchLeaves();
   }, [navigate]);
 
   const fetchAttendance = async () => {
@@ -33,6 +35,20 @@ const EmployeeDashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching attendance", error);
+    }
+  };
+
+  const fetchLeaves = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/leaves/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        setLeaves(response.data.leaves);
+      }
+    } catch (error) {
+      console.error("Error fetching leaves", error);
     }
   };
 
@@ -178,6 +194,30 @@ const EmployeeDashboard = () => {
               <button className="w-full text-left p-3 rounded-xl border border-border hover:bg-muted transition-colors font-medium text-sm">
                 View Payslip
               </button>
+            </div>
+          </div>
+          {/* Recent Leaves */}
+          <div className="bg-card p-6 rounded-2xl shadow-sm border border-border col-span-1 md:col-span-3">
+            <h2 className="text-lg font-semibold mb-4">Recent Leave Requests</h2>
+            <div className="space-y-3">
+              {leaves.length === 0 ? (
+                <p className="text-muted-foreground text-sm">No leave requests found.</p>
+              ) : (
+                leaves.map((leave, idx) => (
+                  <div key={idx} className="flex justify-between items-center p-3 border border-border rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">{new Date(leave.startDate).toLocaleDateString()} to {new Date(leave.endDate).toLocaleDateString()}</p>
+                      <p className="text-xs text-muted-foreground">{leave.reason}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded text-xs font-bold ${
+                      leave.status === 'APPROVED' ? 'bg-green-100 text-green-700' : 
+                      leave.status === 'REJECTED' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                    }`}>
+                      {leave.status}
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
