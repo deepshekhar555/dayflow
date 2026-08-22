@@ -1,0 +1,186 @@
+{
+  "employees": [
+    {
+      "id": "EMP-101",
+      "name": "Alex Rivera",
+      "email": "alex.rivera@hrhq.com",
+      "role": "Senior Frontend Engineer",
+      "department": "Engineering",
+      "joinDate": "2024-03-15",
+      "status": "Active",
+      "salary": 115000,
+      "avatarColor": "hsla(210, 100%, 65%, 0.2)",
+      "avatarText": "AR",
+      "rating": 4.8
+    },
+    {
+      "id": "EMP-102",
+      "name": "Sarah Chen",
+      "email": "sarah.chen@hrhq.com",
+      "role": "Lead UI/UX Designer",
+      "department": "Design",
+      "joinDate": "2023-08-10",
+      "status": "Active",
+      "salary": 125000,
+      "avatarColor": "hsla(280, 100%, 65%, 0.2)",
+      "avatarText": "SC",
+      "rating": 4.9
+    },
+    {
+      "id": "EMP-103",
+      "name": "David Kim",
+      "email": "david.kim@hrhq.com",
+      "role": "DevOps Specialist",
+      "department": "Engineering",
+      "joinDate": "2024-11-01",
+      "status": "On Leave",
+      "salary": 118000,
+      "avatarColor": "hsla(190, 100%, 45%, 0.2)",
+      "avatarText": "DK",
+      "rating": 4.5
+    },
+    {
+      "id": "EMP-104",
+      "name": "Elana Rostova",
+      "email": "elana.rostova@hrhq.com",
+      "role": "Product Marketing Manager",
+      "department": "Marketing",
+      "joinDate": "2025-01-05",
+      "status": "Onboarding",
+      "salary": 92000,
+      "avatarColor": "hsla(25, 100%, 60%, 0.2)",
+      "avatarText": "ER",
+      "rating": 4.2
+    },
+    {
+      "id": "EMP-105",
+      "name": "Olivia Martinez",
+      "email": "olivia.martinez@hrhq.com",
+      "role": "Financial Analyst",
+      "department": "Finance",
+      "joinDate": "2025-06-15",
+      "status": "Onboarding",
+      "salary": 85000,
+      "avatarColor": "hsla(340, 100%, 60%, 0.2)",
+      "avatarText": "OM",
+      "rating": 4.0
+    }
+  ],
+  "leaves": [
+    {
+      "id": "LV-201",
+      "employeeId": "EMP-103",
+      "employeeName": "David Kim",
+      "type": "Medical Leave",
+      "startDate": "2026-08-20",
+      "endDate": "2026-08-28",
+      "status": "Approved",
+      "reason": "Recovering from minor knee surgery."
+    },
+    {
+      "id": "LV-202",
+      "employeeId": "EMP-101",
+      "employeeName": "Alex Rivera",
+      "type": "Vacation",
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-10",
+      "status": "Pending",
+      "reason": "Annual family summer trip."
+    },
+    {
+      "id": "LV-203",
+      "employeeId": "EMP-102",
+      "employeeName": "Sarah Chen",
+      "type": "Personal Leave",
+      "startDate": "2026-09-05",
+      "endDate": "2026-09-07",
+      "status": "Pending",
+      "reason": "Attending Design Conference."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "REV-301",
+      "employeeId": "EMP-101",
+      "employeeName": "Alex Rivera",
+      "reviewer": "Sarah Chen",
+      "score": 4.8,
+      "date": "2026-06-10",
+      "feedback": "Alex is an outstanding lead engineer. Outstanding frontend performance optimization."
+    },
+    {
+      "id": "REV-302",
+      "employeeId": "EMP-102",
+      "employeeName": "Sarah Chen",
+      "reviewer": "Director Desk",
+      "score": 4.9,
+      "date": "2026-05-18",
+      "feedback": "Sarah created the new high-conversion UI design system. Exceptional leadership."
+    }
+  ],
+  "onboarding": [
+    {
+      "employeeId": "EMP-104",
+      "tasks": [
+        { "id": "task-1", "completed": true },
+        { "id": "task-2", "completed": true },
+        { "id": "task-3", "completed": false },
+        { "id": "task-4", "completed": false },
+        { "id": "task-5", "completed": false }
+      ]
+    },
+    {
+      "employeeId": "EMP-105",
+      "tasks": [
+        { "id": "task-1", "completed": true },
+        { "id": "task-2", "completed": false },
+        { "id": "task-3", "completed": false },
+        { "id": "task-4", "completed": false },
+        { "id": "task-5", "completed": false }
+      ]
+    }
+  ],
+  "attendance": [
+    {
+      "id": "ATT-401",
+      "employeeId": "EMP-101",
+      "employeeName": "Alex Rivera",
+      "date": "2026-08-22",
+      "checkIn": "08:55",
+      "checkOut": "17:30",
+      "status": "Present",
+      "hoursWorked": 8.5
+    },
+    {
+      "id": "ATT-402",
+      "employeeId": "EMP-102",
+      "employeeName": "Sarah Chen",
+      "date": "2026-08-22",
+      "checkIn": "09:05",
+      "checkOut": "18:00",
+      "status": "Present",
+      "hoursWorked": 8.9
+    },
+    {
+      "id": "ATT-403",
+      "employeeId": "EMP-103",
+      "employeeName": "David Kim",
+      "date": "2026-08-22",
+      "checkIn": "-",
+      "checkOut": "-",
+      "status": "On Leave",
+      "hoursWorked": 0
+    }
+  ],
+  "payrollRuns": [
+    {
+      "id": "PAY-801",
+      "month": "July 2026",
+      "status": "Approved",
+      "dateProcessed": "2026-07-31",
+      "totalGross": 535000,
+      "totalNet": 374500,
+      "itemsCount": 5
+    }
+  ]
+}
