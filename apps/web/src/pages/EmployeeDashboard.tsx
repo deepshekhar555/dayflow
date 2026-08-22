@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, Calendar, FileText, Settings, LogOut } from 'lucide-react';
 
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Clock, Calendar, FileText, Settings, LogOut } from 'lucide-react';
+
 const EmployeeDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [attendance, setAttendance] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -13,7 +19,52 @@ const EmployeeDashboard = () => {
       return;
     }
     setUser(JSON.parse(userData));
+    fetchAttendance();
   }, [navigate]);
+
+  const fetchAttendance = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/attendance/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        setAttendance(response.data.attendance);
+      }
+    } catch (error) {
+      console.error("Error fetching attendance", error);
+    }
+  };
+
+  const handleCheckIn = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:5000/api/attendance/check-in', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchAttendance();
+    } catch (error) {
+      console.error("Check in failed", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCheckOut = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:5000/api/attendance/check-out', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchAttendance();
+    } catch (error) {
+      console.error("Check out failed", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -65,19 +116,56 @@ const EmployeeDashboard = () => {
           {/* Attendance Card */}
           <div className="bg-card p-6 rounded-2xl shadow-sm border border-border col-span-1 md:col-span-2">
             <h2 className="text-lg font-semibold mb-4">Today's Attendance</h2>
-            <div className="flex items-center justify-between p-4 bg-muted rounded-xl">
-              <div>
-                <p className="text-sm text-muted-foreground">Status</p>
-                <p className="font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Checked In</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Working for</p>
-                <p className="text-2xl font-bold">04h 37m</p>
-              </div>
-              <button className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90">
-                Check Out
-              </button>
-            </div>
+            
+            {(() => {
+              const todayStr = new Date().toISOString().split('T')[0];
+              const todayAttendance = attendance.find(a => a.date.startsWith(todayStr));
+              
+              if (!todayAttendance) {
+                return (
+                  <div className="flex items-center justify-between p-4 bg-muted rounded-xl">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p className="font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-gray-400"></span> Not Checked In</p>
+                    </div>
+                    <button onClick={handleCheckIn} disabled={loading} className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50">
+                      {loading ? 'Checking in...' : 'Check In'}
+                    </button>
+                  </div>
+                );
+              }
+              
+              if (todayAttendance.checkIn && !todayAttendance.checkOut) {
+                return (
+                  <div className="flex items-center justify-between p-4 bg-muted rounded-xl">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p className="font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Checked In</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-muted-foreground">Since</p>
+                      <p className="text-xl font-bold">{new Date(todayAttendance.checkIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                    </div>
+                    <button onClick={handleCheckOut} disabled={loading} className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50">
+                      {loading ? 'Checking out...' : 'Check Out'}
+                    </button>
+                  </div>
+                );
+              }
+              
+              return (
+                <div className="flex items-center justify-between p-4 bg-muted rounded-xl">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Status</p>
+                    <p className="font-medium flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-blue-500"></span> Completed</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-muted-foreground">Working Hours</p>
+                    <p className="text-xl font-bold">Done for today</p>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
           
           {/* Quick Actions */}
