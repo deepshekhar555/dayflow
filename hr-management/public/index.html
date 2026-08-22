@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR-HQ // Enterprise Workforce System</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     PAGE 1: LOGIN & CREATE ACCOUNT
+══════════════════════════════════ -->
+<div id="view-login" class="login-page-container">
+  <div class="login-wrapper">
+
+    <!-- Left: Promo Panel -->
+    <div class="login-promo-panel">
+      <div class="login-promo-logo">H</div>
+      <h1 class="login-promo-title">HR-HQ Enterprise Workforce System</h1>
+      <p class="login-promo-subtitle">Manage your entire workforce with AI-powered insights, real-time attendance, and seamless payroll — all in Indian Rupees (₹).</p>
+      <div class="login-promo-features">
+        <div class="promo-feature"><div class="promo-feature-icon">🤖</div> AI-Powered HR Assistant</div>
+        <div class="promo-feature"><div class="promo-feature-icon">📊</div> Real-Time Analytics & Reports</div>
+        <div class="promo-feature"><div class="promo-feature-icon">⏰</div> Live Attendance Tracking</div>
+        <div class="promo-feature"><div class="promo-feature-icon">💰</div> Payroll in Indian Rupee (₹)</div>
+        <div class="promo-feature"><div class="promo-feature-icon">🔐</div> Role-Based Access Control</div>
+      </div>
+    </div>
+
+    <!-- Right: Form Panel -->
+    <div class="login-form-panel">
+      <h2 class="login-form-title">Welcome Back</h2>
+      <p class="login-form-subtitle">Sign in to your portal or create a new account</p>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <!-- SIGN IN FORM -->
+      <form id="form-login-auth">
+        <div class="form-group">
+          <label for="auth-role">Select Portal</label>
+          <select id="auth-role" class="form-control">
+            <option value="hr">🔵 HR Administrator Portal</option>
+            <option value="employee">🟢 Employee Portal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="auth-email">Email Address</label>
+          <input type="email" id="auth-email" class="form-control" placeholder="admin@hrhq.com" required>
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:14px;">
+          Log In to Portal →
+        </button>
+        <div class="demo-box">
+          <strong>Demo Credentials:</strong><br>
+          🔵 HR Admin: admin@hrhq.com / admin<br>
+          🟢 Employee: alex.rivera@hrhq.com / user
+        </div>
+      </form>
+
+      <!-- CREATE ACCOUNT FORM -->
+      <form id="form-register-auth" style="display:none;">
+        <div class="form-group">
+          <label for="reg-account-type">Account Type</label>
+          <select id="reg-account-type" class="form-control">
+            <option value="employee">🟢 Employee Account (Self-Service / Read-Only)</option>
+            <option value="hr">🔵 HR Administrator Account (Full Control)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="e.g. Arjun Sharma" required>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Work Email</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="arjun.sharma@company.com" required>
+        </div>
+        <div id="reg-emp-fields">
+          <div class="form-group">
+            <label for="reg-dept">Department</label>
+            <select id="reg-dept" class="form-control">
+              <option value="Engineering">Engineering</option>
+              <option value="Design">Design</option>
+              <option value="Human Resources">Human Resources</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Finance">Finance</option>
+              <option value="Operations">Operations</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reg-role">Job Title</label>
+            <input type="text" id="reg-role" class="form-control" placeholder="e.g. Software Engineer">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Create Password</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:14px;">
+          ✨ Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     HR ADMIN PORTAL
+══════════════════════════════════ -->
+<div id="portal-hr" style="display:none;">
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="hr-sidebar">
+      <div class="brand">
+        <div class="brand-logo">H</div>
+        <span class="brand-name">HR-HQ</span>
+      </div>
+      <div class="portal-badge hr-badge">
+        <span class="badge-dot"></span> HR Administrator Portal
+      </div>
+      <p class="nav-section-label">Main Navigation</p>
+      <ul class="nav-links">
+        <li class="nav-item active" data-view="dashboard"><a>
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          <span>Dashboard</span>
+        </a></li>
+        <li class="nav-item" data-view="directory"><a>
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Employee Directory</span>
+        </a></li>
+        <li class="nav-item" data-view="attendance"><a>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Attendance</span>
+          <span class="nav-badge" id="hr-att-badge">0</span>
+        </a></li>
+        <li class="nav-item" data-view="absent-tracker"><a>
+          <svg viewBox="0 0 24 24"><path d="M9 9l6 6"/><path d="M15 9l-6 6"/><circle cx="12" cy="12" r="10"/></svg>
+          <span>Absent Tracker</span>
+          <span class="nav-badge" id="hr-absent-badge">0</span>
+        </a></li>
+        <li class="nav-item" data-view="leaves"><a>
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Leave Board</span>
+          <span class="nav-badge" id="hr-leave-badge">0</span>
+        </a></li>
+        <li class="nav-item" data-view="performance"><a>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Performance</span>
+        </a></li>
+        <li class="nav-item" data-view="payroll"><a>
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Payroll (₹)</span>
+        </a></li>
+        <li class="nav-item" data-view="payslip-payments"><a>
+          <svg viewBox="0 0 24 24"><path d="M2 7h20v10H2z"/><path d="M2 11h20"/><circle cx="18" cy="16" r="1"/></svg>
+          <span>Payslip Payments</span>
+        </a></li>
+        <li class="nav-item" data-view="onboarding"><a>
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Onboarding</span>
+        </a></li>
+        <li class="nav-item" data-view="analytics"><a>
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Analytics</span>
+        </a></li>
+        <li class="nav-item" data-view="ai-assistant"><a>
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>AI Assistant</span>
+        </a></li>
+        <li class="nav-item" data-view="announcements"><a>
+          <svg viewBox="0 0 24 24"><path d="M3 11l18-8v18L3 13v-2z"/><path d="M11 14v7"/></svg>
+          <span>Announcements</span>
+        </a></li>
+      </ul>
+      <p class="nav-section-label">HR Actions</p>
+      <ul class="nav-links">
+        <li><a style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--text-secondary);" id="btn-open-upload-data">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Bulk Upload CSV/JSON
+        </a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge" id="hr-user-badge">
+          <div class="user-avatar" id="hr-user-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">HR</div>
+          <div class="user-info">
+            <span class="user-name" id="hr-user-name">HR Administrator</span>
+            <span class="user-role" id="hr-user-role">Assigned by HR Portal</span>
+          </div>
+        </div>
+        <button class="btn btn-secondary" id="btn-hr-logout" style="width:100%;justify-content:center;margin-top:10px;font-size:12px;">🚪 Log Out</button>
+      </div>
+    </aside>
+
+    <!-- HR Main Content -->
+    <main class="main-content" id="hr-main">
+      <header class="header">
+        <div>
+          <h1 class="header-title" id="hr-page-title">Dashboard</h1>
+          <p class="header-subtitle" id="hr-page-subtitle">Real-time overview of workforce and key HR indicators.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btn-hr-switch-emp" style="font-size:12px;padding:7px 14px;">
+            🟢 Switch to Employee View
+          </button>
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="hr-global-search" placeholder="Search employees, leave, payroll...">
+          </div>
+          <button class="action-btn-circle" id="theme-toggle" title="Toggle Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="theme-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- ═══ HR VIEWS ═══ -->
+
+      <!-- DASHBOARD -->
+      <section class="view-container" id="view-dashboard">
+        <div class="custom-alert">🔔 <strong>Notice:</strong> Check pending leave requests in the Leave Board.</div>
+        <div class="stats-grid">
+          <div class="glass-panel stat-card">
+            <div class="stat-info"><span class="stat-label">Total Employees</span><span class="stat-value" id="stat-total-emp">0</span><span class="stat-trend up">▲ Growing</span></div>
+            <div class="stat-icon-wrapper icon-indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          </div>
+          <div class="glass-panel stat-card">
+            <div class="stat-info"><span class="stat-label">On Leave</span><span class="stat-value" id="stat-on-leave">0</span><span class="stat-trend down">Active Leave</span></div>
+            <div class="stat-icon-wrapper icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          </div>
+          <div class="glass-panel stat-card">
+            <div class="stat-info"><span class="stat-label">Onboarding</span><span class="stat-value" id="stat-onboarding">0</span><span class="stat-trend up">New Hires</span></div>
+            <div class="stat-icon-wrapper icon-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          </div>
+          <div class="glass-panel stat-card">
+            <div class="stat-info"><span class="stat-label">Avg Rating</span><span class="stat-value" id="stat-avg-rating">0.0</span><span class="stat-trend up">Excellent</span></div>
+            <div class="stat-icon-wrapper icon-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          </div>
+        </div>
+        <div class="dashboard-layout">
+          <div class="glass-panel"><h2 class="section-title mb-16">Department Distribution</h2><div id="dept-chart"></div></div>
+          <div class="glass-panel"><h2 class="section-title mb-16">Pending Actions</h2><div id="dashboard-actions"></div></div>
+        </div>
+      </section>
+
+      <!-- EMPLOYEE DIRECTORY -->
+      <section class="view-container" id="view-directory" style="display:none;">
+        <div class="glass-panel">
+          <div class="toolbar">
+            <div class="filters-group">
+              <select class="custom-select" id="filter-dept"><option value="All">All Departments</option><option>Engineering</option><option>Design</option><option>Human Resources</option><option>Marketing</option><option>Finance</option><option>Operations</option></select>
+              <select class="custom-select" id="filter-status"><option value="All">All Statuses</option><option>Active</option><option>Onboarding</option><option>On Leave</option></select>
+            </div>
+            <button class="btn btn-primary hr-only" id="btn-add-emp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Employee
+            </button>
+          </div>
+          <div class="table-wrapper" style="margin-top:16px;">
+            <table class="custom-table">
+              <thead><tr><th>Employee</th><th>Department</th><th>Role</th><th>Join Date</th><th>Status</th><th>Rating</th><th>Actions</th></tr></thead>
+              <tbody id="directory-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section class="view-container" id="view-attendance" style="display:none;">
+        <div class="attendance-hero">
+          <div class="glass-panel checkin-widget">
+            <span class="stat-label">Live System Time</span>
+            <div class="clock-display" id="live-clock">00:00:00</div>
+            <div class="date-display" id="live-date">Loading...</div>
+            <div class="checkin-actions">
+              <button class="btn btn-primary btn-checkin" id="btn-quick-checkin">⏱ Punch In</button>
+              <button class="btn btn-secondary btn-checkin" id="btn-quick-checkout">🔴 Punch Out</button>
+            </div>
+          </div>
+          <div class="glass-panel">
+            <h3 class="section-title mb-16">Today's Metrics</h3>
+            <div class="attendance-stats">
+              <div class="att-stat-box"><span class="att-stat-label">Present</span><span class="att-stat-value text-success" id="att-count-present">0</span></div>
+              <div class="att-stat-box"><span class="att-stat-label">Late</span><span class="att-stat-value text-warning" id="att-count-late">0</span></div>
+              <div class="att-stat-box"><span class="att-stat-label">On Leave</span><span class="att-stat-value" style="color:var(--accent-secondary);" id="att-count-leave">0</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">Daily Attendance Log</h2>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Employee</th><th>Date</th><th>Punch In</th><th>Punch Out</th><th>Hours</th><th>Status</th></tr></thead>
+              <tbody id="attendance-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABSENT TRACKER -->
+      <section class="view-container" id="view-absent-tracker" style="display:none;">
+        <div class="glass-panel">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Absent Employees Today</h2>
+              <p class="text-muted mt-8" style="font-size:13px;">Employees who are absent and not marked on approved leave.</p>
+            </div>
+            <button class="btn btn-secondary" id="btn-refresh-absent">Refresh</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Employee</th><th>Department</th><th>Status</th><th>Reason</th><th>Action</th></tr></thead>
+              <tbody id="absent-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEAVE BOARD -->
+      <section class="view-container" id="view-leaves" style="display:none;">
+        <div class="toolbar">
+          <h2 class="section-title">Leave Board</h2>
+          <button class="btn btn-primary" id="btn-request-leave">📅 Request Leave</button>
+        </div>
+        <div class="leave-grid" id="leave-board-cards"></div>
+      </section>
+
+      <!-- PERFORMANCE -->
+      <section class="view-container" id="view-performance" style="display:none;">
+        <div class="toolbar">
+          <h2 class="section-title">Performance Appraisals</h2>
+          <button class="btn btn-primary hr-only" id="btn-add-review">⭐ Log Review</button>
+        </div>
+        <div class="stats-grid" id="reviews-history-cards"></div>
+      </section>
+
+      <!-- PAYROLL (₹) -->
+      <section class="view-container" id="view-payroll" style="display:none;">
+        <div class="glass-panel">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Payroll Management (₹)</h2>
+              <p class="text-muted mt-8" style="font-size:13px;">Base salary adjustments, allowances & tax in Indian Rupees</p>
+            </div>
+            <button class="btn btn-primary hr-only" id="btn-run-monthly-payroll">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Run Monthly Payroll
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Employee</th><th>Department</th><th>Annual CTC (₹)</th><th>Monthly Net (₹)</th><th>Review Score</th><th class="hr-only">Adjust</th><th>Payslip</th></tr></thead>
+              <tbody id="payroll-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">Monthly Payroll Runs</h2>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Run ID</th><th>Month</th><th>Processed On</th><th>Gross (₹)</th><th>Net Disbursed (₹)</th><th>Status</th><th class="hr-only">Action</th></tr></thead>
+              <tbody id="payroll-runs-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAYSLIP PAYMENTS -->
+      <section class="view-container" id="view-payslip-payments" style="display:none;">
+        <div class="glass-panel">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Payslip Payments Center</h2>
+              <p class="text-muted mt-8" style="font-size:13px;">Track monthly salary disbursement and mark employees as paid.</p>
+            </div>
+            <select id="payment-status-filter" class="custom-select" style="min-width: 170px;">
+              <option value="All">All Payments</option>
+              <option value="Paid">Paid</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Employee</th><th>Month</th><th>Net Pay (₹)</th><th>Payment Mode</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="payments-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ONBOARDING -->
+      <section class="view-container" id="view-onboarding" style="display:none;">
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">New Hire Onboarding Tracker</h2>
+          <div class="onboarding-list" id="onboarding-tracker-list"></div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="view-container" id="view-analytics" style="display:none;">
+        <div class="reports-download-banner">
+          <div><h2 style="font-size:18px;">Workforce Analytics & Data Upload</h2><p class="text-muted mt-8" style="font-size:13px;">Import CSV/JSON files for employees, attendance, and reviews</p></div>
+          <button class="btn btn-primary" id="btn-analytics-upload-data">📁 Upload Data File</button>
+        </div>
+        <div class="analytics-grid">
+          <div class="glass-panel chart-card">
+            <h3 class="section-title">Department Salary Distribution (₹)</h3>
+            <div class="chart-container-box"><canvas id="chart-dept-cost"></canvas></div>
+          </div>
+          <div class="glass-panel chart-card">
+            <h3 class="section-title">Rating vs Compensation</h3>
+            <div class="chart-container-box"><canvas id="chart-rating-salary"></canvas></div>
+          </div>
+        </div>
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">AI Retention Risk Report</h2>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Employee</th><th>Department</th><th>Risk Level</th><th>AI Analysis</th></tr></thead>
+              <tbody id="retention-risk-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI ASSISTANT -->
+      <section class="view-container" id="view-ai-assistant" style="display:none;">
+        <div class="ai-layout">
+          <div class="glass-panel ai-chat-container">
+            <div class="ai-chat-header">
+              <div class="ai-avatar-badge">AI</div>
+              <div><strong>HQ-AI HR Copilot</strong><div style="font-size:12px;color:var(--status-active);">● Online — Python AI Engine</div></div>
+            </div>
+            <div class="ai-messages-feed" id="ai-messages-feed">
+              <div class="chat-bubble chat-bubble-ai">👋 Hello! I'm your <strong>AI HR Assistant</strong>. Ask me about salaries (₹), attendance, leave status, top performers, or ask me to draft a performance review!</div>
+            </div>
+            <div class="chat-input-bar">
+              <input type="text" id="ai-input-text" class="chat-input-field" placeholder="Ask e.g. 'Who is on leave?' or 'Show payroll breakdown in ₹'...">
+              <button class="btn btn-primary" id="btn-send-ai">Send ➤</button>
+            </div>
+          </div>
+          <div class="ai-sidebar-panel">
+            <div class="glass-panel">
+              <h3 class="section-title mb-16" style="font-size:15px;">Suggested Prompts</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button class="prompt-chip" data-prompt="Who is on leave today?">🏖 Who is on leave today?</button>
+                <button class="prompt-chip" data-prompt="Who are the top rated performers?">⭐ Top performers</button>
+                <button class="prompt-chip" data-prompt="What is the monthly payroll breakdown in rupees?">💰 Payroll in ₹</button>
+                <button class="prompt-chip" data-prompt="Draft performance review for Sarah Chen">✍ Draft a review</button>
+                <button class="prompt-chip" data-prompt="Show retention risk report">📊 Retention risks</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANNOUNCEMENTS -->
+      <section class="view-container" id="view-announcements" style="display:none;">
+        <div class="glass-panel">
+          <div class="section-header">
+            <h2 class="section-title">HR Announcements</h2>
+            <button class="btn btn-primary" id="btn-add-announcement">+ New Announcement</button>
+          </div>
+          <div class="announcement-compose" id="announcement-compose" style="display:none; margin-bottom: 16px;">
+            <div class="form-group">
+              <label for="announcement-title">Title</label>
+              <input id="announcement-title" class="form-control" type="text" placeholder="e.g. Payroll credit date update">
+            </div>
+            <div class="form-group">
+              <label for="announcement-message">Message</label>
+              <textarea id="announcement-message" class="form-control" placeholder="Write announcement for all employees..."></textarea>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-primary" id="btn-save-announcement">Publish</button>
+              <button class="btn btn-secondary" id="btn-cancel-announcement">Cancel</button>
+            </div>
+          </div>
+          <div id="announcement-list" class="onboarding-list"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div><!-- end portal-hr -->
+
+<!-- ══════════════════════════════════
+     EMPLOYEE PORTAL (Distinct Design)
+══════════════════════════════════ -->
+<div id="portal-employee" data-portal="employee" style="display:none;">
+  <div class="app-container">
+
+    <!-- Employee Sidebar -->
+    <aside class="sidebar" id="emp-sidebar">
+      <div class="brand">
+        <div class="brand-logo" style="background:linear-gradient(135deg,#059669,#0891b2);">E</div>
+        <span class="brand-name">My Portal</span>
+      </div>
+      <div class="portal-badge emp-badge">
+        <span class="badge-dot"></span> Employee Self-Service
+      </div>
+      <p class="nav-section-label">My Workspace</p>
+      <ul class="nav-links">
+        <li class="nav-item active" data-empview="emp-home"><a>
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>My Dashboard</span>
+        </a></li>
+        <li class="nav-item" data-empview="emp-attendance"><a>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>My Attendance</span>
+        </a></li>
+        <li class="nav-item" data-empview="emp-payslip"><a>
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>My Payslip (₹)</span>
+        </a></li>
+        <li class="nav-item" data-empview="emp-leaves"><a>
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+          <span>My Leave Requests</span>
+        </a></li>
+        <li class="nav-item" data-empview="emp-performance"><a>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>My Performance</span>
+        </a></li>
+        <li class="nav-item" data-empview="emp-ai"><a>
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>AI Assistant</span>
+        </a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-profile-badge" id="emp-user-badge">
+          <div class="user-avatar" id="emp-user-avatar" style="background:linear-gradient(135deg,#059669,#0891b2);">EM</div>
+          <div class="user-info">
+            <span class="user-name" id="emp-user-name">Employee</span>
+            <span class="user-role" id="emp-user-role">Employee Portal</span>
+          </div>
+        </div>
+        <button class="btn btn-secondary" id="btn-emp-logout" style="width:100%;justify-content:center;margin-top:10px;font-size:12px;">🚪 Log Out</button>
+      </div>
+    </aside>
+
+    <!-- Employee Main Content -->
+    <main class="main-content" id="emp-main" style="background:var(--bg-primary);">
+      <header class="header" style="border-bottom-color:rgba(5,150,105,0.2);">
+        <div>
+          <h1 class="header-title" id="emp-page-title">My Dashboard</h1>
+          <p class="header-subtitle" id="emp-page-subtitle">Your personal HR workspace — read-only access</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btn-emp-request-leave-header" style="font-size:12px;padding:7px 14px;">
+            📅 Request Leave
+          </button>
+          <button class="action-btn-circle" id="emp-theme-toggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- EMP HOME -->
+      <section class="view-container" id="view-emp-home">
+        <div class="emp-portal-hero">
+          <div class="emp-identity-card">
+            <div class="emp-avatar-large" id="emp-big-avatar">EM</div>
+            <h2 id="emp-big-name" style="font-size:20px;">Employee</h2>
+            <p id="emp-big-role" style="font-size:13px;opacity:0.85;"></p>
+            <p id="emp-big-dept" style="font-size:12px;opacity:0.7;"></p>
+            <div style="margin-top:12px;background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px;font-size:12px;">
+              ID: <strong id="emp-big-id">-</strong>
+            </div>
+          </div>
+          <div class="emp-quick-stats">
+            <div class="emp-quick-card">
+              <div class="eq-icon">⏱</div>
+              <div class="eq-value" id="eq-days-present">0</div>
+              <div class="eq-label">Days Present</div>
+            </div>
+            <div class="emp-quick-card">
+              <div class="eq-icon">🏖</div>
+              <div class="eq-value" id="eq-leaves">0</div>
+              <div class="eq-label">Leaves This Month</div>
+            </div>
+            <div class="emp-quick-card">
+              <div class="eq-icon">⭐</div>
+              <div class="eq-value" id="eq-rating">-</div>
+              <div class="eq-label">Performance Rating</div>
+            </div>
+            <div class="emp-quick-card">
+              <div class="eq-icon">💰</div>
+              <div class="eq-value" id="eq-salary" style="font-size:16px;">₹0</div>
+              <div class="eq-label">Monthly Net Pay</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">My Attendance — Today</h2>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Date</th><th>Punch In</th><th>Punch Out</th><th>Hours</th><th>Status</th></tr></thead>
+              <tbody id="emp-today-att-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMP ATTENDANCE -->
+      <section class="view-container" id="view-emp-attendance" style="display:none;">
+        <div class="attendance-hero">
+          <div class="glass-panel checkin-widget">
+            <span class="stat-label">Live Time</span>
+            <div class="clock-display" id="emp-live-clock">00:00:00</div>
+            <div class="date-display" id="emp-live-date">Loading...</div>
+            <div class="checkin-actions">
+              <button class="btn btn-primary btn-checkin" id="emp-btn-checkin">⏱ Punch In</button>
+              <button class="btn btn-secondary btn-checkin" id="emp-btn-checkout">🔴 Punch Out</button>
+            </div>
+          </div>
+          <div class="glass-panel">
+            <h3 class="section-title mb-16">My Monthly Summary</h3>
+            <div class="attendance-stats">
+              <div class="att-stat-box"><span class="att-stat-label">Present</span><span class="att-stat-value text-success" id="emp-att-present">0</span></div>
+              <div class="att-stat-box"><span class="att-stat-label">Late</span><span class="att-stat-value text-warning" id="emp-att-late">0</span></div>
+              <div class="att-stat-box"><span class="att-stat-label">Absent</span><span class="att-stat-value text-danger" id="emp-att-absent">0</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">My Attendance History</h2>
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead><tr><th>Date</th><th>Punch In</th><th>Punch Out</th><th>Hours</th><th>Status</th></tr></thead>
+              <tbody id="emp-att-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMP PAYSLIP (₹) -->
+      <section class="view-container" id="view-emp-payslip" style="display:none;">
+        <div class="glass-panel payslip-header">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;color:white;">
+            <div>
+              <p style="font-size:12px;opacity:0.7;margin-bottom:4px;">SALARY STATEMENT</p>
+              <h2 id="payslip-emp-name" style="font-size:22px;">Employee Name</h2>
+              <p id="payslip-emp-role" style="font-size:13px;opacity:0.8;"></p>
+            </div>
+            <div style="text-align:right;">
+              <p style="font-size:12px;opacity:0.7;">Month</p>
+              <p id="payslip-month" style="font-size:16px;font-weight:700;"></p>
+              <p id="payslip-emp-id" style="font-size:12px;opacity:0.7;margin-top:4px;"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <div class="rupee-row">
+            <span class="label">Annual CTC</span>
+            <span class="amount" id="slip-annual-ctc">₹0</span>
+          </div>
+          <div class="rupee-row">
+            <span class="label">Monthly Gross</span>
+            <span class="amount" id="slip-monthly-gross">₹0</span>
+          </div>
+          <div class="rupee-row">
+            <span class="label">+ House Rent Allowance (HRA 10%)</span>
+            <span class="amount positive" id="slip-hra">+₹0</span>
+          </div>
+          <div class="rupee-row">
+            <span class="label">+ Dearness Allowance (DA 5%)</span>
+            <span class="amount positive" id="slip-da">+₹0</span>
+          </div>
+          <div class="rupee-row">
+            <span class="label">- Professional Tax (PT ₹200)</span>
+            <span class="amount negative" id="slip-pt">-₹200</span>
+          </div>
+          <div class="rupee-row">
+            <span class="label">- Income Tax Withheld (TDS 10%)</span>
+            <span class="amount negative" id="slip-tds">-₹0</span>
+          </div>
+          <div class="rupee-row">
+            <span class="label">- Provident Fund (PF 12%)</span>
+            <span class="amount negative" id="slip-pf">-₹0</span>
+          </div>
+          <div class="rupee-row" style="margin-top:8px;padding-top:16px;border-top:2px solid var(--border-color);">
+            <span style="font-weight:700;font-size:15px;">Net Monthly Take-Home</span>
+            <span class="amount net rupee-amount" id="slip-net">₹0</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-primary" onclick="window.print()">🖨 Print Payslip</button>
+          <button class="btn btn-secondary" id="btn-download-payslip">⬇ Download PDF</button>
+        </div>
+      </section>
+
+      <!-- EMP LEAVES -->
+      <section class="view-container" id="view-emp-leaves" style="display:none;">
+        <div class="toolbar">
+          <h2 class="section-title">My Leave Requests</h2>
+          <button class="btn btn-primary" id="emp-btn-request-leave">📅 New Leave Request</button>
+        </div>
+        <div class="leave-grid" id="emp-leave-cards"></div>
+      </section>
+
+      <!-- EMP PERFORMANCE -->
+      <section class="view-container" id="view-emp-performance" style="display:none;">
+        <div class="glass-panel">
+          <h2 class="section-title mb-16">My Performance Reviews</h2>
+          <div class="stats-grid" id="emp-reviews-cards"></div>
+        </div>
+      </section>
+
+      <!-- EMP AI -->
+      <section class="view-container" id="view-emp-ai" style="display:none;">
+        <div class="ai-layout">
+          <div class="glass-panel ai-chat-container">
+            <div class="ai-chat-header">
+              <div class="ai-avatar-badge" style="background:linear-gradient(135deg,#059669,#0891b2);">AI</div>
+              <div><strong>HR AI Assistant</strong><div style="font-size:12px;color:var(--status-active);">● Powered by Python</div></div>
+            </div>
+            <div class="ai-messages-feed" id="emp-ai-feed">
+              <div class="chat-bubble chat-bubble-ai">👋 Hi! I'm your personal HR AI. Ask me about your leave balance, payslip details, or any HR policy questions!</div>
+            </div>
+            <div class="chat-input-bar">
+              <input type="text" id="emp-ai-input" class="chat-input-field" placeholder="Ask about your payslip, leaves, salary in ₹...">
+              <button class="btn btn-primary" id="emp-btn-send-ai" style="background:linear-gradient(135deg,#059669,#0891b2);">Send ➤</button>
+            </div>
+          </div>
+          <div class="ai-sidebar-panel">
+            <div class="glass-panel">
+              <h3 class="section-title mb-16" style="font-size:15px;">Quick Questions</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button class="prompt-chip" data-prompt="What is my monthly salary in rupees?">💰 My salary in ₹</button>
+                <button class="prompt-chip" data-prompt="How many leaves do I have this month?">🏖 My leave balance</button>
+                <button class="prompt-chip" data-prompt="What is my attendance this month?">⏱ My attendance</button>
+                <button class="prompt-chip" data-prompt="What are the HR leave policies?">📋 Leave policies</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div><!-- end portal-employee -->
+
+<!-- ══════════════════════════════════
+     SHARED MODALS
+══════════════════════════════════ -->
+
+<!-- ADD/EDIT EMPLOYEE -->
+<div class="modal-overlay" id="modal-employee">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-emp-title">Add New Employee</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <form id="form-employee">
+      <input type="hidden" id="emp-form-id">
+      <div class="form-group"><label>Full Name</label><input type="text" id="emp-name" class="form-control" placeholder="Arjun Sharma" required></div>
+      <div class="form-group"><label>Email</label><input type="email" id="emp-email" class="form-control" placeholder="arjun@company.com" required></div>
+      <div class="form-group"><label>Job Title</label><input type="text" id="emp-role" class="form-control" placeholder="Senior Developer" required></div>
+      <div class="form-group"><label>Department</label>
+        <select id="emp-dept" class="form-control"><option>Engineering</option><option>Design</option><option>Human Resources</option><option>Marketing</option><option>Finance</option><option>Operations</option></select>
+      </div>
+      <div class="form-group"><label>Status</label>
+        <select id="emp-status" class="form-control"><option value="Active">Active</option><option value="Onboarding">Onboarding</option><option value="On Leave">On Leave</option></select>
+      </div>
+      <div class="form-group"><label>Annual CTC (₹)</label><input type="number" id="emp-salary" class="form-control" placeholder="700000" min="100000" required></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Employee</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- LEAVE REQUEST -->
+<div class="modal-overlay" id="modal-leave">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title">Submit Leave Request</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <form id="form-leave">
+      <div class="form-group"><label>Employee</label><select id="leave-emp-id" class="form-control" required></select></div>
+      <div class="form-group"><label>Leave Type</label>
+        <select id="leave-type" class="form-control"><option value="Vacation">Vacation / Annual Leave</option><option value="Medical Leave">Medical / Sick Leave</option><option value="Personal Leave">Personal Leave</option><option value="Maternity/Paternity">Maternity / Paternity</option><option value="Casual Leave">Casual Leave</option></select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group"><label>Start Date</label><input type="date" id="leave-start" class="form-control" required></div>
+        <div class="form-group"><label>End Date</label><input type="date" id="leave-end" class="form-control" required></div>
+      </div>
+      <div class="form-group"><label>Reason</label><textarea id="leave-reason" class="form-control" placeholder="Brief description..." required></textarea></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PERFORMANCE REVIEW -->
+<div class="modal-overlay" id="modal-review">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title">Log Performance Review</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <form id="form-review">
+      <div class="form-group"><label>Employee</label><select id="review-emp-id" class="form-control" required></select></div>
+      <div class="form-group"><label>Reviewer Name</label><input type="text" id="review-reviewer" class="form-control" placeholder="HR Manager" required></div>
+      <div class="form-group"><label>Rating (1.0 – 5.0)</label><input type="number" id="review-score" class="form-control" placeholder="4.5" step="0.1" min="1" max="5" required></div>
+      <div class="form-group"><label>Feedback</label><textarea id="review-feedback" class="form-control" placeholder="Detailed review..." required></textarea></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- BULK UPLOAD -->
+<div class="modal-overlay" id="modal-upload-data">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title">Bulk Data Upload</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <form id="form-upload-data" enctype="multipart/form-data">
+      <div class="form-group"><label>Target Category</label>
+        <select id="upload-category" class="form-control"><option value="employees">Employee Records</option><option value="attendance">Attendance Logs</option><option value="reviews">Performance Reviews</option><option value="leaves">Leave Requests</option></select>
+      </div>
+      <div class="form-group"><label>File (CSV or JSON)</label><input type="file" id="upload-file" class="form-control" accept=".csv,.json" required></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Upload File</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PAYSLIP MODAL (HR View) -->
+<div class="modal-overlay" id="modal-payslip">
+  <div class="modal-card" style="max-width:560px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Monthly Payslip (₹)</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="payslip-modal-content"></div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-close-modal>Close</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">🖨 Print</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./js/app.js"></script>
+</body>
+</html>
