@@ -6,11 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Clock, Calendar, FileText, Settings, LogOut } from 'lucide-react';
 
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Clock, Calendar, FileText, Settings, LogOut, Bell } from 'lucide-react';
+
 const EmployeeDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [attendance, setAttendance] = useState<any[]>([]);
   const [leaves, setLeaves] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -22,7 +28,34 @@ const EmployeeDashboard = () => {
     setUser(JSON.parse(userData));
     fetchAttendance();
     fetchLeaves();
+    fetchNotifications();
   }, [navigate]);
+
+  const fetchNotifications = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5000/api/notifications', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        setNotifications(response.data.notifications);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications", error);
+    }
+  };
+
+  const markNotificationAsRead = async (id: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.patch(`http://localhost:5000/api/notifications/${id}/read`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchNotifications();
+    } catch (error) {
+      console.error("Error marking notification", error);
+    }
+  };
 
   const fetchAttendance = async () => {
     try {
@@ -116,12 +149,46 @@ const EmployeeDashboard = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
+        <header className="flex justify-between items-center mb-8 relative">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Good morning, {user.employee?.firstName || 'Employee'} 👋</h1>
             <p className="text-muted-foreground mt-1">Here is what's happening today.</p>
           </div>
           <div className="flex items-center gap-4">
+            <div className="relative">
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)} 
+                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-muted/80 transition-colors relative"
+              >
+                <Bell className="w-5 h-5" />
+                {notifications.filter(n => !n.isRead).length > 0 && (
+                  <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-background"></span>
+                )}
+              </button>
+              
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-80 bg-card rounded-xl shadow-lg border border-border z-50 overflow-hidden">
+                  <div className="p-4 border-b border-border font-semibold">Notifications</div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="p-4 text-center text-sm text-muted-foreground">No notifications</div>
+                    ) : (
+                      notifications.map(notif => (
+                        <div 
+                          key={notif.id} 
+                          onClick={() => !notif.isRead && markNotificationAsRead(notif.id)}
+                          className={`p-4 border-b border-border cursor-pointer hover:bg-muted transition-colors ${!notif.isRead ? 'bg-primary/5' : ''}`}
+                        >
+                          <p className="font-medium text-sm">{notif.title}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{notif.message}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            
             <button className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
               {user.employee?.firstName?.charAt(0) || 'E'}
             </button>
