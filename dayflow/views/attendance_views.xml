@@ -1,0 +1,12 @@
+﻿<odoo>
+    <record id="view_hr_attendance_tree_dayflow" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.dayflow</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <field name="worked_hours" position="after">
+                <field name="status"/>
+            </field>
+        </field>
+    </record>
+</odoo>

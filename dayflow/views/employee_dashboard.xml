@@ -1,0 +1,19 @@
+﻿<odoo>
+    <menuitem id="menu_dayflow_root" name="Dayflow" sequence="5"/>
+
+    <record id="action_my_attendance" model="ir.actions.act_window">
+        <field name="name">My Attendance</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[("employee_id.user_id","=",uid)]</field>
+    </record>
+    <menuitem id="menu_my_attendance" name="My Attendance" parent="menu_dayflow_root" action="action_my_attendance" sequence="10"/>
+
+    <record id="action_my_leaves" model="ir.actions.act_window">
+        <field name="name">My Leaves</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[("employee_id.user_id","=",uid)]</field>
+    </record>
+    <menuitem id="menu_my_leaves" name="My Leaves" parent="menu_dayflow_root" action="action_my_leaves" sequence="20"/>
+</odoo>

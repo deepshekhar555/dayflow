@@ -1,0 +1,25 @@
+﻿<odoo>
+    <record id="action_all_employees" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+    <menuitem id="menu_all_employees" name="Employees" parent="menu_dayflow_root"
+              action="action_all_employees" groups="hr.group_hr_user" sequence="30"/>
+
+    <record id="action_all_attendance" model="ir.actions.act_window">
+        <field name="name">All Attendance</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_all_attendance" name="All Attendance" parent="menu_dayflow_root"
+              action="action_all_attendance" groups="hr.group_hr_user" sequence="40"/>
+
+    <record id="action_leave_approvals" model="ir.actions.act_window">
+        <field name="name">Leave Approvals</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_leave_approvals" name="Leave Approvals" parent="menu_dayflow_root"
+              action="action_leave_approvals" groups="hr.group_hr_user" sequence="50"/>
+</odoo>
